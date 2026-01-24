@@ -21,10 +21,20 @@ _FORMAT_EXTENSIONS = {
 
 def _syft_sbom_impl(ctx):
     """Generate SBOM from OCI image using syft."""
-    if OutputGroupInfo not in ctx.attr.image or not hasattr(ctx.attr.image[OutputGroupInfo], "oci_tarball"):
-        fail("image must be a target with an 'oci_tarball' output group")
 
-    tarball = ctx.attr.image[OutputGroupInfo].oci_tarball.to_list()[0]
+    # Support both rules_img (oci_tarball output group) and rules_oci (tarball output group)
+    tarball = None
+    if OutputGroupInfo in ctx.attr.image:
+        output_group_info = ctx.attr.image[OutputGroupInfo]
+        if hasattr(output_group_info, "oci_tarball"):
+            # rules_img: uses oci_tarball output group
+            tarball = output_group_info.oci_tarball.to_list()[0]
+        elif hasattr(output_group_info, "tarball"):
+            # rules_oci: uses tarball output group from oci_load
+            tarball = output_group_info.tarball.to_list()[0]
+
+    if tarball == None:
+        fail("image must be a target with an 'oci_tarball' (rules_img) or 'tarball' (rules_oci) output group")
     output = ctx.outputs.sbom
 
     # Get syft binary from explicit attr or toolchain
@@ -70,7 +80,7 @@ syft_sbom = rule(
     attrs = {
         "image": attr.label(
             mandatory = True,
-            doc = "OCI image target with an 'oci_tarball' output group",
+            doc = "OCI image target with an 'oci_tarball' (rules_img) or 'tarball' (rules_oci) output group",
         ),
         "format": attr.string(
             default = "spdx-json",

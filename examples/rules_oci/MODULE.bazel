@@ -1,0 +1,38 @@
+"""Example usage of syft.bzl rules with rules_oci."""
+
+module(
+    name = "syft_rules_oci_example",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "syft.bzl", version = "0.0.0")
+local_path_override(
+    module_name = "syft.bzl",
+    path = "../..",
+)
+
+# Register syft toolchain
+syft = use_extension("@syft.bzl//:extensions.bzl", "syft")
+syft.toolchain(version = "1.40.1")
+use_repo(syft, "syft_toolchains")
+
+register_toolchains("@syft_toolchains//:all")
+
+# rules_oci for building OCI images
+bazel_dep(name = "rules_oci", version = "2.2.7")
+
+# Pull a base image using rules_oci
+oci = use_extension("@rules_oci//oci:extensions.bzl", "oci")
+
+# Alpine Linux 3.21 - multi-platform image for SBOM generation example
+oci.pull(
+    name = "alpine",
+    digest = "sha256:5405e8f36ce1878720f71217d664aa3dea32e5e5df11acbf07fc78ef5661465b",
+    image = "index.docker.io/library/alpine",
+    platforms = [
+        "linux/amd64",
+        "linux/arm64/v8",
+    ],
+)
+use_repo(oci, "alpine", "alpine_linux_amd64", "alpine_linux_arm64_v8")

@@ -18,14 +18,44 @@ register_toolchains("@syft_toolchains//:all")
 
 ## Usage
 
-### Basic Example
+### With rules_img
 
 ```starlark
+load("@rules_img//img:image.bzl", "image_manifest")
 load("@syft.bzl//:defs.bzl", "syft_sbom")
+
+image_manifest(
+    name = "my_image",
+    base = "@alpine",
+)
 
 syft_sbom(
     name = "my_sbom",
-    image = ":my_oci_image",  # Must have oci_tarball output group
+    image = ":my_image",
+)
+```
+
+### With rules_oci
+
+```starlark
+load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
+load("@syft.bzl//:defs.bzl", "syft_sbom")
+
+oci_image(
+    name = "my_image",
+    base = "@alpine",
+)
+
+# rules_oci requires oci_load to create a tarball
+oci_load(
+    name = "my_image.tar",
+    image = ":my_image",
+    repo_tags = ["my-image:latest"],
+)
+
+syft_sbom(
+    name = "my_sbom",
+    image = ":my_image.tar",
 )
 ```
 
@@ -34,7 +64,7 @@ syft_sbom(
 ```starlark
 syft_sbom(
     name = "my_sbom",
-    image = ":my_oci_image",
+    image = ":my_image",
     format = "cyclonedx-json",  # or spdx-json, syft-json, etc.
 )
 ```
@@ -55,17 +85,24 @@ If you prefer to use your own syft binary (e.g., from `go_deps`):
 ```starlark
 syft_sbom(
     name = "my_sbom",
-    image = ":my_oci_image",
+    image = ":my_image",
     syft = "@com_github_anchore_syft//cmd/syft",
 )
 ```
 
-## Requirements
+## Compatibility
 
-The `image` target must expose an `oci_tarball` output group. This is compatible with:
+The `image` target must expose a tarball output group:
 
-- [rules_img](https://github.com/bazel-contrib/rules_img) `image_manifest` targets
-- Any rule that provides `OutputGroupInfo` with an `oci_tarball` field
+| OCI Rules | Output Group | Target Type |
+|-----------|--------------|-------------|
+| [rules_img](https://github.com/bazel-contrib/rules_img) | `oci_tarball` | `image_manifest` |
+| [rules_oci](https://github.com/bazel-contrib/rules_oci) | `tarball` | `oci_load` |
+
+## Examples
+
+- [rules_img example](examples/rules_img/) - SBOM generation with rules_img
+- [rules_oci example](examples/rules_oci/) - SBOM generation with rules_oci
 
 ## Building
 

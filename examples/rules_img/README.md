@@ -1,4 +1,4 @@
-# syft.bzl Basic Example
+# syft.bzl rules_img Example
 
 This example demonstrates how to generate SBOMs for container images built with [rules_img](https://github.com/bazel-contrib/rules_img).
 

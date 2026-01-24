@@ -1,0 +1,6 @@
+# Use host configuration by default
+# Container images are built for the target platform specified by --platforms
+
+# For cross-compilation to Linux (when building on macOS):
+# build --platforms=@oci_crane_linux_arm64//:platform
+# build --platforms=@oci_crane_linux_amd64//:platform
