@@ -1,0 +1,19 @@
+"""Example usage of syft.bzl rules."""
+
+module(
+    name = "syft_example",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "syft.bzl", version = "0.0.0")
+local_path_override(
+    module_name = "syft.bzl",
+    path = "../..",
+)
+
+# Register syft toolchain
+syft = use_extension("@syft.bzl//:extensions.bzl", "syft")
+syft.toolchain(version = "1.40.1")
+use_repo(syft, "syft_toolchains")
+
+register_toolchains("@syft_toolchains//:all")
