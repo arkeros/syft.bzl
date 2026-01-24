@@ -80,7 +80,7 @@ syft_sbom(
 
 ### Custom Syft Binary
 
-If you prefer to use your own syft binary (e.g., from `go_deps`):
+If you prefer to use your own syft binary (e.g., compiled from source via `go_deps`):
 
 ```starlark
 syft_sbom(
@@ -89,6 +89,33 @@ syft_sbom(
     syft = "@com_github_anchore_syft//cmd/syft",
 )
 ```
+
+### Compiled Syft Toolchain
+
+For hermetic builds, you can compile syft from Go source and register it as a toolchain:
+
+```starlark
+# BUILD file
+load("@syft.bzl//syft/toolchain:toolchain.bzl", "syft_toolchain")
+
+syft_toolchain(
+    name = "compiled_syft_toolchain",
+    syft = "@com_github_anchore_syft//cmd/syft",
+)
+
+toolchain(
+    name = "syft_toolchain",
+    toolchain = ":compiled_syft_toolchain",
+    toolchain_type = "@syft.bzl//syft:toolchain",
+)
+```
+
+```starlark
+# MODULE.bazel
+register_toolchains("//:syft_toolchain")
+```
+
+See the [compiled_syft example](examples/compiled_syft/) for a complete setup with `rules_go` and `gazelle`.
 
 ## Compatibility
 
@@ -103,6 +130,7 @@ The `image` target must expose a tarball output group:
 
 - [rules_img example](examples/rules_img/) - SBOM generation with rules_img
 - [rules_oci example](examples/rules_oci/) - SBOM generation with rules_oci
+- [compiled_syft example](examples/compiled_syft/) - Compile syft from Go source and register as toolchain
 
 ## Building
 

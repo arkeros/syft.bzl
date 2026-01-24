@@ -1,0 +1,5 @@
+# Build for Linux by default since container images are Linux-based
+build --platforms=@rules_img//img/private/platforms:linux_arm64
+
+# For x86_64/amd64 builds, use:
+# build --platforms=@rules_img//img/private/platforms:linux_amd64
