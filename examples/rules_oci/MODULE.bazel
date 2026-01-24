@@ -13,7 +13,7 @@ local_path_override(
 )
 
 # Register syft toolchain
-syft = use_extension("@syft.bzl//:extensions.bzl", "syft")
+syft = use_extension("@syft.bzl//syft:extensions.bzl", "syft")
 syft.toolchain(version = "1.40.1")
 use_repo(syft, "syft_toolchains")
 

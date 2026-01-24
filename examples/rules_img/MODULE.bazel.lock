@@ -447,14 +447,14 @@
         }
       }
     },
-    "@@syft.bzl+//:extensions.bzl%syft": {
+    "@@syft.bzl+//syft:extensions.bzl%syft": {
       "general": {
-        "bzlTransitiveDigest": "8W14k1tJTF0RpgwcB2qpkP1N8YJfm2AHps0oIWn39HA=",
-        "usagesDigest": "TkYGyBJuCVEgI+OduGhjgrLsH4cSGDmu5i37KR4JrFg=",
+        "bzlTransitiveDigest": "WJkKfk95HbTAiQ2hE4wnXJ9XGbSKKjfRc6tJlmqBlWA=",
+        "usagesDigest": "zWUbzMeUySiNpgEwqSB7QUM5Z/E92tsHtLg/3NXb9cs=",
         "recordedInputs": [],
         "generatedRepoSpecs": {
           "syft_toolchains": {
-            "repoRuleId": "@@syft.bzl+//:extensions.bzl%_syft_repo",
+            "repoRuleId": "@@syft.bzl+//syft:extensions.bzl%_syft_repo",
             "attributes": {
               "version": "1.40.1"
             }

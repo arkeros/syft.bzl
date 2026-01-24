@@ -41,7 +41,7 @@ def _syft_sbom_impl(ctx):
     if ctx.attr.syft:
         syft = ctx.executable.syft
     else:
-        toolchain_info = ctx.toolchains["@syft.bzl//:toolchain_type"]
+        toolchain_info = ctx.toolchains["@syft.bzl//syft:toolchain"]
         if not toolchain_info:
             fail("No syft toolchain found. Either set the 'syft' attribute or register the syft toolchain.")
         syft = toolchain_info.syft_info.syft_binary
@@ -95,7 +95,7 @@ syft_sbom = rule(
     },
     outputs = _sbom_output,
     toolchains = [
-        config_common.toolchain_type("@syft.bzl//:toolchain_type", mandatory = False),
+        config_common.toolchain_type("@syft.bzl//syft:toolchain", mandatory = False),
     ],
     doc = """Generate SBOM from OCI image using Syft.
 
@@ -104,7 +104,7 @@ using [Syft](https://github.com/anchore/syft).
 
 Example:
     ```starlark
-    load("@syft.bzl//:defs.bzl", "syft_sbom")
+    load("@syft.bzl//syft:defs.bzl", "syft_sbom")
 
     syft_sbom(
         name = "my_sbom",

@@ -60,7 +60,7 @@ def _syft_repo_impl(rctx):
 
     rctx.file("BUILD.bazel", """
 load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
-load("@syft.bzl//:toolchain.bzl", "syft_toolchain")
+load("@syft.bzl//syft/toolchain:toolchain.bzl", "syft_toolchain")
 
 # Wrap the binary as a sh_binary so it can be used as an executable
 sh_binary(
@@ -78,7 +78,7 @@ syft_toolchain(
 toolchain(
     name = "syft_toolchain",
     toolchain = ":toolchain",
-    toolchain_type = "@syft.bzl//:toolchain_type",
+    toolchain_type = "@syft.bzl//syft:toolchain",
     exec_compatible_with = {constraints},
 )
 """.format(constraints = constraints, exe_name = exe_name))

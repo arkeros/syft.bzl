@@ -9,7 +9,7 @@ Add the following to your `MODULE.bazel`:
 ```starlark
 bazel_dep(name = "syft.bzl", version = "0.1.0")
 
-syft = use_extension("@syft.bzl//:extensions.bzl", "syft")
+syft = use_extension("@syft.bzl//syft:extensions.bzl", "syft")
 syft.toolchain(version = "1.40.1")  # Optional: uses latest if omitted
 use_repo(syft, "syft_toolchains")
 
@@ -22,7 +22,7 @@ register_toolchains("@syft_toolchains//:all")
 
 ```starlark
 load("@rules_img//img:image.bzl", "image_manifest")
-load("@syft.bzl//:defs.bzl", "syft_sbom")
+load("@syft.bzl//syft:defs.bzl", "syft_sbom")
 
 image_manifest(
     name = "my_image",
@@ -39,7 +39,7 @@ syft_sbom(
 
 ```starlark
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
-load("@syft.bzl//:defs.bzl", "syft_sbom")
+load("@syft.bzl//syft:defs.bzl", "syft_sbom")
 
 oci_image(
     name = "my_image",
