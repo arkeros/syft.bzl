@@ -1,19 +1,27 @@
-# Example BUILD file showing syft_sbom usage
-#
-# Usage with rules_img:
-#
-#   load("@rules_img//img:image.bzl", "image_manifest")
-#   load("@syft.bzl//:defs.bzl", "syft_sbom")
-#
-#   image_manifest(
-#       name = "my_image",
-#       base = "@distroless_static",
-#   )
-#
-#   syft_sbom(
-#       name = "my_sbom",
-#       image = ":my_image",
-#       format = "spdx-json",  # default
-#   )
-#
-# The image target must provide an "oci_tarball" output group.
+# Example BUILD file demonstrating syft_sbom usage with rules_img
+
+load("@rules_img//img:image.bzl", "image_manifest")
+load("@syft.bzl//:defs.bzl", "syft_sbom")
+
+# Create a simple image based on Alpine Linux
+# Uses select() to pick the correct platform-specific base image
+image_manifest(
+    name = "example_image",
+    base = select({
+        "@platforms//cpu:arm64": "@alpine_linux_arm64",
+        "@platforms//cpu:x86_64": "@alpine_linux_amd64",
+    }),
+)
+
+# Generate SBOM in SPDX JSON format (default)
+syft_sbom(
+    name = "example_sbom",
+    image = ":example_image",
+)
+
+# Generate SBOM in CycloneDX format
+syft_sbom(
+    name = "example_sbom_cyclonedx",
+    format = "cyclonedx-json",
+    image = ":example_image",
+)
