@@ -95,6 +95,19 @@ For x86_64/amd64 builds:
 bazel build //:sbom --platforms=@rules_img//img/private/platforms:linux_amd64
 ```
 
+## Dev environment
+
+This example uses [`lazy_bazel_env`](https://github.com/arkeros/lazy_bazel_env.bzl) to provide hermetic dev tools. Both `go` and `syft` are automatically available via `GO_TOOLS` since they're declared in `go.mod`:
+
+```bash
+bazel run //tools:dev
+direnv allow
+go version   # hermetic Go from rules_go
+syft version # compiled from source
+```
+
+The `GO_TOOLS` dictionary from `@gazelle//:go_tools.bzl` automatically exposes `go` and all Go binaries declared in `go.mod` (packages under `tool` directive or with `/cmd/` paths).
+
 ## Supported SBOM formats
 
 - `spdx-json` (default)
