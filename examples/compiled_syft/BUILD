@@ -7,8 +7,7 @@
 # - Integration with existing Go dependency management
 
 load("@rules_img//img:image.bzl", "image_manifest")
-load("@syft.bzl//syft:defs.bzl", "syft_sbom")
-load("@syft.bzl//syft/toolchain:toolchain.bzl", "syft_toolchain")
+load("@syft.bzl", "syft_sbom", "syft_toolchain")
 
 # Define a syft toolchain using the compiled binary
 syft_toolchain(

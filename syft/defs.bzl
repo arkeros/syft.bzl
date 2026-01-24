@@ -104,7 +104,7 @@ using [Syft](https://github.com/anchore/syft).
 
 Example:
     ```starlark
-    load("@syft.bzl//syft:defs.bzl", "syft_sbom")
+    load("@syft.bzl", "syft_sbom")
 
     syft_sbom(
         name = "my_sbom",

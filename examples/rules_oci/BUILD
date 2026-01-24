@@ -1,7 +1,7 @@
 # Example BUILD file demonstrating syft_sbom usage with rules_oci
 
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
-load("@syft.bzl//syft:defs.bzl", "syft_sbom")
+load("@syft.bzl", "syft_sbom")
 
 # Create a simple image based on Alpine Linux
 # Uses select() to pick the correct platform-specific base image

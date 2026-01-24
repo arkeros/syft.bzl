@@ -22,7 +22,7 @@ register_toolchains("@syft_toolchains//:all")
 
 ```starlark
 load("@rules_img//img:image.bzl", "image_manifest")
-load("@syft.bzl//syft:defs.bzl", "syft_sbom")
+load("@syft.bzl", "syft_sbom")
 
 image_manifest(
     name = "my_image",
@@ -39,7 +39,7 @@ syft_sbom(
 
 ```starlark
 load("@rules_oci//oci:defs.bzl", "oci_image", "oci_load")
-load("@syft.bzl//syft:defs.bzl", "syft_sbom")
+load("@syft.bzl", "syft_sbom")
 
 oci_image(
     name = "my_image",
@@ -96,7 +96,7 @@ For hermetic builds, you can compile syft from Go source and register it as a to
 
 ```starlark
 # BUILD file
-load("@syft.bzl//syft/toolchain:toolchain.bzl", "syft_toolchain")
+load("@syft.bzl", "syft_toolchain")
 
 syft_toolchain(
     name = "compiled_syft_toolchain",

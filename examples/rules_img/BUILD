@@ -1,7 +1,7 @@
 # Example BUILD file demonstrating syft_sbom usage with rules_img
 
 load("@rules_img//img:image.bzl", "image_manifest")
-load("@syft.bzl//syft:defs.bzl", "syft_sbom")
+load("@syft.bzl", "syft_sbom")
 
 # Create a simple image based on Alpine Linux
 # Uses select() to pick the correct platform-specific base image
