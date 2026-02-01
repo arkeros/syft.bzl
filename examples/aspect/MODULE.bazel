@@ -1,0 +1,42 @@
+"""Example: syft_sbom_aspect for auto-generating SBOMs."""
+
+module(
+    name = "syft_aspect_example",
+    version = "0.0.0",
+)
+
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "syft.bzl", version = "0.0.0")
+local_path_override(
+    module_name = "syft.bzl",
+    path = "../..",
+)
+
+# Register syft toolchain
+syft = use_extension("@syft.bzl//syft:extensions.bzl", "syft")
+syft.toolchain(version = "1.40.1")
+use_repo(syft, "syft_toolchains")
+
+register_toolchains("@syft_toolchains//:all")
+
+# rules_img for building OCI images
+bazel_dep(name = "rules_img", version = "0.3.3")
+
+# Pull base images
+pull = use_repo_rule("@rules_img//img:pull.bzl", "pull")
+
+pull(
+    name = "alpine_linux_arm64",
+    digest = "sha256:410dabcd6f1d53f1f4e5c1ce9553efa298ca6bcdd086dfc976b8f659d58b46d2",
+    layer_handling = "lazy",
+    registry = "index.docker.io",
+    repository = "library/alpine",
+)
+
+pull(
+    name = "alpine_linux_amd64",
+    digest = "sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c",
+    layer_handling = "lazy",
+    registry = "index.docker.io",
+    repository = "library/alpine",
+)

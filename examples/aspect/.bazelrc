@@ -1,0 +1,2 @@
+# Attach syft_sbom_aspect to all targets
+build --aspects=@syft.bzl//syft:defs.bzl%syft_sbom_aspect
