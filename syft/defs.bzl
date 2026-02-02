@@ -134,6 +134,12 @@ Example:
 
 def _syft_sbom_aspect_impl(target, ctx):
     """Aspect that generates SBOM for OCI image targets."""
+
+    # Skip image_load targets — they contain the same image as the manifest
+    # and scanning them is redundant (and they lack per-target aspect_hints).
+    if ctx.rule.kind in ("image_load", "_image_load"):
+        return []
+
     tarball = _get_tarball(target)
     if tarball == None:
         return []
